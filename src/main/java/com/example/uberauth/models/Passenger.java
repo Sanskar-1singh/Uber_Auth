@@ -24,6 +24,17 @@ public class Passenger extends BaseModel {
     @Column(nullable = false)
     private String phoneNumber;
 
+    @Override
+    public String toString() {
+        return "Passenger{" +
+                "name='" + name + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", bookings=" + bookings +
+                '}';
+    }
+
     @Column(nullable = false)
     private String email;
 
