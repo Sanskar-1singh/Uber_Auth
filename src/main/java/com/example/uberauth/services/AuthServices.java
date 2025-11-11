@@ -32,7 +32,6 @@ public class AuthServices {
 
            Passenger newPassenger=passengerRepository.save(passenger);
            System.out.println(newPassenger);
-
            PassengerDto passengerDto=PassengerDto.from(newPassenger);
 
         return passengerDto;

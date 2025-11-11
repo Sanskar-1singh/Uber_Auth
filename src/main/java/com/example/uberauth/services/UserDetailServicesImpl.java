@@ -21,7 +21,7 @@ public class UserDetailServicesImpl implements UserDetailsService {
 
     PassengerRepository  passengerRepository;
 
-    UserDetailServicesImpl(@Qualifier("passengerRepository") PassengerRepository passengerRepository) {
+    public UserDetailServicesImpl(@Qualifier("passengerRepository") PassengerRepository passengerRepository) {
         this.passengerRepository = passengerRepository;
     }
 

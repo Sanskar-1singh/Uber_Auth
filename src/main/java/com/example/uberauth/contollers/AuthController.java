@@ -1,6 +1,7 @@
 package com.example.uberauth.contollers;
 
 
+import com.example.uberauth.Dtos.AuthRequestDto;
 import com.example.uberauth.Dtos.PassengerDto;
 import com.example.uberauth.Dtos.PassengerSignUpDto;
 import com.example.uberauth.services.AuthServices;
@@ -8,6 +9,9 @@ import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,8 +19,12 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private AuthServices authServices;
 
-    public AuthController(@Qualifier("authServices") AuthServices authServices) {
+    private AuthenticationManager  authenticationManager;
+
+    public AuthController(@Qualifier("authServices") AuthServices authServices,
+                          AuthenticationManager authenticationManager) {
         this.authServices = authServices;
+        this.authenticationManager = authenticationManager;
     }
 
     @PostMapping("/signup")
@@ -28,10 +36,16 @@ public class AuthController {
 
     }
 
-    @GetMapping("/signin")
-    public ResponseEntity<?> signin(){
-
-        return new ResponseEntity<>(10,HttpStatus.OK);
+    @PostMapping("/signin/passenger")
+    public ResponseEntity<?> signin(@RequestBody AuthRequestDto  authRequestDto){
+        Authentication authentication=authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(authRequestDto.getEmail(),authRequestDto.getPassword()));
+          if(authentication.isAuthenticated()){
+              return new ResponseEntity<>("Sucess",HttpStatus.OK);
+          }
+          else{
+              return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+          }
     }
 
 }
