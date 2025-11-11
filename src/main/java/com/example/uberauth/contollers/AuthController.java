@@ -19,7 +19,7 @@ public class AuthController {
         this.authServices = authServices;
     }
 
-    @PostMapping("/signUp")
+    @PostMapping("/signup")
     public ResponseEntity<PassengerDto> signUp(@RequestBody PassengerSignUpDto request){
 
         System.out.println("signUp");
@@ -35,3 +35,23 @@ public class AuthController {
     }
 
 }
+
+
+/**
+ *
+ * OAuth2.0
+ * login via email password
+ * login via google /fb/lionkedin
+ * login through SSO
+ * login via mobile SMS or OTP
+ *
+ * here all the above we do not have to share credeential with everyone>>>
+ *
+ * FOUR MAIN COMPONENT OF AUTH COMPONENT->>>>
+ * RESOURCE  OWNER->USER ITSELF
+ * CLIENT->BOOK MY SHOW
+ * RESOURCE SERVER->SERVER OF LEETCODE,BMS
+ * AUTH SERVER->GOOGLE FB GITHUB SERVER
+ *
+ *
+ */

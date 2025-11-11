@@ -10,7 +10,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SpringSecurity {
 
-
+ // IT IS VERY IMPORTANT BEACUSE when we include spring security our all api beacome auth protected therefore by adding belo w
+    //configuration we allow request to bypass the authentications>>>
      @Bean
      public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
          return http.csrf(csrf->csrf.disable())
