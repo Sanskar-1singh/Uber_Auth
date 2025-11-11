@@ -17,25 +17,24 @@ public class AuthPassengerDetails extends Passenger implements UserDetails {
       }
 
 
-     @Override
-    public String getPassword() {
-         return this.password;
-     }
-     @Override
-    public String getUsername() {
-        return this.username;
-     }
-// below set of method di not of much concern
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
+         @Override
+        public String getPassword() {
+             return this.password;
+         }
+         @Override
+        public String getUsername() {
+            return this.username;
+         }
+    // below set of method di not of much concern
+        @Override
+        public Collection<? extends GrantedAuthority> getAuthorities() {
+            return null;
+        }
 
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+        @Override
+        public boolean isAccountNonExpired() {
+            return true;
+        }
 }
 
 /**

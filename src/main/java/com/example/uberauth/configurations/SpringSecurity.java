@@ -14,6 +14,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+
+/**
+ * here in this file we have complete setup for spring security configurations>>>>
+ */
 
 @Configuration
 public class SpringSecurity {
@@ -69,6 +74,9 @@ public class SpringSecurity {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    public void addCorsMapping(CorsRegistry registry){
+         registry.addMapping("/**").allowedOriginPatterns("*").allowedMethods("*");
+    }
 
 }
 
@@ -111,6 +119,10 @@ public class SpringSecurity {
  * strategies>>>>
  *
  * FINAL FLOW->>>>>>
+ *
+ * i have Authentication object which is coming from spring and UsernamePasswordAuthenticationToken this object is also
+ * coming from spring security and authenticationMangaer.authenticate() function internally call authenticatioProvider straegies
+ * and on further DAOAuthenticationProvider calls userDetailsService to fetch userDetail object and perform authentication logic
  *
  *
  */
