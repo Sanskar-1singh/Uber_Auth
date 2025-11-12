@@ -7,6 +7,8 @@ import com.example.uberauth.Dtos.PassengerDto;
 import com.example.uberauth.Dtos.PassengerSignUpDto;
 import com.example.uberauth.services.AuthServices;
 import com.example.uberauth.services.JwtServices;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,9 +34,9 @@ public class AuthController {
     @Value("${cookie.expiry}")
     private int CookieExpiry;
 
-    private JwtServices  jwtServices;
+    private final JwtServices  jwtServices;
 
-    private AuthenticationManager  authenticationManager;
+    private final AuthenticationManager  authenticationManager;
 
     public AuthController(@Qualifier("authServices") AuthServices authServices,
                           AuthenticationManager authenticationManager,
@@ -75,6 +77,18 @@ public class AuthController {
           else{
               return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
           }
+    }
+
+    @GetMapping("/validate")
+    public ResponseEntity<?> validate(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse){
+      Cookie[] cookie=httpServletRequest.getCookies();
+
+      for(Cookie cookie1:cookie){
+          if(cookie1.getName().equals("jwtToken")){
+              System.out.println(cookie1.getValue());
+          }
+      }
+      return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

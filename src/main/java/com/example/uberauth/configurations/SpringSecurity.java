@@ -14,7 +14,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+
+import java.util.List;
 
 /**
  * here in this file we have complete setup for spring security configurations>>>>
@@ -35,13 +38,28 @@ public class SpringSecurity {
 
  // IT IS VERY IMPORTANT BEACUSE when we include spring security our all api beacome auth protected therefore by adding belo w
     //configuration we allow request to bypass the authentications>>>
-     @Bean
-     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-         return http.csrf(csrf->csrf.disable())
-                 .authorizeHttpRequests(auth->auth.requestMatchers("/api/v1/auth/signup/**").permitAll()
-                         .requestMatchers("api/v1/auth/signin/**").permitAll())
-                 .build();
-     }
+ @Bean
+ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+     http
+             .csrf(csrf -> csrf.disable())
+             .cors(cors -> cors.configurationSource(request -> {
+                 var corsConfig = new CorsConfiguration();
+                 corsConfig.setAllowedOriginPatterns(List.of("*"));
+                 corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                 corsConfig.setAllowCredentials(true);
+                 corsConfig.setAllowedHeaders(List.of("*"));
+                 return corsConfig;
+             }))
+             .authenticationProvider(authenticationProvider())
+             .authorizeHttpRequests(auth -> auth
+                     .requestMatchers("/api/v1/auth/signup/**").permitAll()
+                     .requestMatchers("/api/v1/auth/signin/**").permitAll()
+                     .requestMatchers("/api/v1/auth/validate/**").permitAll()
+                     .anyRequest().authenticated()
+             );
+
+     return http.build();
+ }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -74,10 +92,14 @@ public class SpringSecurity {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    public void addCorsMapping(CorsRegistry registry){
-         registry.addMapping("/**").allowedOriginPatterns("*").allowedMethods("*");
-    }
 
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowCredentials(true)
+                .allowedOriginPatterns("*")
+                .allowedHeaders("*")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+    }
 }
 
 /**
