@@ -2,7 +2,7 @@ package com.example.uberauth.services;
 
 import com.example.uberauth.Repository.PassengerRepository;
 import com.example.uberauth.helper.AuthPassengerDetails;
-import com.example.uberauth.models.Passenger;
+import com.example.uberentityservices.models.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

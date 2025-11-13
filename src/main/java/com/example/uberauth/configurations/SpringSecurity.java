@@ -2,7 +2,9 @@ package com.example.uberauth.configurations;
 
 
 import com.example.uberauth.Repository.PassengerRepository;
+import com.example.uberauth.filters.JwtAuthFilter;
 import com.example.uberauth.services.UserDetailServicesImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,10 +28,12 @@ import java.util.List;
 @Configuration
 public class SpringSecurity {
 
+
     PassengerRepository passengerRepository;
 
     public SpringSecurity(PassengerRepository passengerRepository) {
         this.passengerRepository = passengerRepository;
+
     }
     @Bean
     public UserDetailsService userDetailsService() {
@@ -39,7 +43,7 @@ public class SpringSecurity {
  // IT IS VERY IMPORTANT BEACUSE when we include spring security our all api beacome auth protected therefore by adding belo w
     //configuration we allow request to bypass the authentications>>>
  @Bean
- public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+ public SecurityFilterChain securityFilterChain(HttpSecurity http,JwtAuthFilter jwtAuthFilter) throws Exception {
      http
              .csrf(csrf -> csrf.disable())
              .cors(cors -> cors.configurationSource(request -> {
@@ -52,11 +56,17 @@ public class SpringSecurity {
              }))
              .authenticationProvider(authenticationProvider())
              .authorizeHttpRequests(auth -> auth
+                     // PUBLIC ROUTES
                      .requestMatchers("/api/v1/auth/signup/**").permitAll()
                      .requestMatchers("/api/v1/auth/signin/**").permitAll()
-                     .requestMatchers("/api/v1/auth/validate/**").permitAll()
+
+                     // PROTECTED ROUTES
+                     .requestMatchers("/api/v1/auth/validate").authenticated()
+
+                     // CATCH ALL — ALWAYS LAST
                      .anyRequest().authenticated()
-             );
+             )
+        .    addFilterBefore(jwtAuthFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
 
      return http.build();
  }

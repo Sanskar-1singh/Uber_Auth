@@ -1,7 +1,9 @@
 package com.example.uberauth.helper;
 
-import com.example.uberauth.models.Passenger;
+
+import com.example.uberentityservices.models.Passenger;
 import org.springframework.security.core.GrantedAuthority;
+
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;

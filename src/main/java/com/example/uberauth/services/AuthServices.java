@@ -4,7 +4,8 @@ package com.example.uberauth.services;
 import com.example.uberauth.Dtos.PassengerDto;
 import com.example.uberauth.Dtos.PassengerSignUpDto;
 import com.example.uberauth.Repository.PassengerRepository;
-import com.example.uberauth.models.Passenger;
+
+import com.example.uberentityservices.models.Passenger;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
